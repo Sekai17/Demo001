@@ -1,0 +1,38 @@
+// Este script es una base para futuras interacciones.
+// Por ahora, su función principal es dar una mejor experiencia de usuario.
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    // === EFECTO EN EL ENCABEZADO AL HACER SCROLL ===
+    // Selecciona el encabezado
+    const header = document.querySelector('.header');
+
+    // Escucha el evento de scroll en la ventana
+    window.addEventListener('scroll', function() {
+        // Si el scroll vertical es mayor a 50px, agrega la clase 'scrolled'
+        // Si no, la quita. Esto te permite cambiar el estilo del header con CSS
+        // cuando el usuario baja en la página.
+        if (window.scrollY > 50) {
+            header.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+        } else {
+            header.style.boxShadow = 'none';
+        }
+    });
+
+    // === VALIDACIÓN SIMPLE DEL FORMULARIO DE CONTACTO ===
+    const form = document.querySelector('.contact-form');
+
+    form.addEventListener('submit', function(event) {
+        // Previene el envío del formulario para mostrar nuestro mensaje
+        event.preventDefault(); 
+        
+        // Aquí podrías conectar el formulario a un servicio como Formspree,
+        // Netlify Forms, o un backend propio para recibir los mensajes.
+        
+        alert('¡Gracias por tu mensaje! Simulación de envío exitosa.');
+        
+        // Limpia el formulario después del envío simulado
+        form.reset();
+    });
+
+});
