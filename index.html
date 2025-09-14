@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DEMO Avanzado — Single-file</title>
+  <meta name="description" content="Demo avanzado en un solo archivo. Rounded UI, modal de proyectos, contacto funcional (mailto + export)." />
+  <style>
+  :root{
+    --bg:#071026;
+    --card:#081226;
+    --glass: rgba(255,255,255,0.03);
+    --accent:#06b6d4;
+    --accent-2:#7c3aed;
+    --muted:#9aa7b8;
+    --radius:18px;
+    --container:1000px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 400px at 10% 10%, rgba(7,18,38,0.6), transparent),
+                linear-gradient(180deg,var(--bg),#031021 50%);
+    color:#e8f2fb;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.4;
+    padding-bottom:60px;
+  }
+  .container{max-width:var(--container);margin:0 auto;padding:28px}
+  header.site-header{
+    position:sticky;top:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    margin:16px; padding:10px;border-radius:30px;backdrop-filter: blur(6px);
+    display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid rgba(255,255,255,0.03);
+  }
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{
+    width:56px;height:56px;border-radius:50%;overflow:hidden;flex:0 0 56px;
+    display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    box-shadow:0 6px 20px rgba(12,18,30,0.6);font-weight:800;color:#031022;
+  }
+  .brand h1{font-size:1.05rem;margin:0}
+  nav.nav{display:flex;gap:12px;align-items:center}
+  nav.nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:999px;font-size:0.95rem}
+  nav.nav a:hover{color:var(--accent);background:rgba(6,11,15,0.35)}
+  .hero{margin:26px;border-radius:24px;padding:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;flex-direction:column;gap:10px}
+  .hero h2{margin:0;font-size:1.6rem}
+  .lead{color:var(--muted)}
+  .hero-cta{display:flex;gap:10px;margin-top:8px}
+  .btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;padding:10px 14px;border-radius:999px;color:#021827;cursor:pointer;font-weight:700}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), var(--glass));padding:18px;border-radius:18px;margin:16px 0;border:1px solid rgba(255,255,255,0.02)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .project{
+    padding:14px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+    display:flex;gap:12px;align-items:center;border:1px solid rgba(255,255,255,0.01);
+    transition:transform .28s ease, box-shadow .28s ease;cursor:pointer;
+  }
+  .project:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(6,11,15,0.6)}
+  .thumb{width:72px;height:72px;border-radius:50%;flex:0 0 72px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#031022;font-weight:800}
+  .project h4{margin:0;font-size:1rem}
+  .project p{margin:6px 0 0;color:var(--muted);font-size:0.92rem}
+  .services{display:flex;flex-direction:column;gap:10px}
+  .service{display:flex;gap:12px;align-items:flex-start}
+  .service .icon{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,0.02)}
+  .muted{color:var(--muted)}
+  footer.site-footer{text-align:center;color:var(--muted);margin-top:30px}
+  /* modal */
+  .modal{
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:28px;z-index:60;
+    background:linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.85));
+  }
+  .modal.open{display:flex}
+  .modal-card{max-width:900px;width:100%;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:20px;padding:18px;border:1px solid rgba(255,255,255,0.03)}
+  .modal-grid{display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:start}
+  .modal-thumb{width:100%;height:220px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(180deg,var(--accent),var(--accent-2));color:#021827;font-weight:800}
+  .close-x{background:transparent;border:none;color:var(--muted);font-weight:700;padding:8px;border-radius:10px;cursor:pointer}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .pill{background:rgba(255,255,255,0.03);padding:6px 10px;border-radius:999px;font-size:0.85rem;color:var(--muted)}
+  /* form */
+  form{display:flex;flex-direction:column;gap:10px}
+  label{display:block;font-size:0.95rem}
+  input,textarea{width:100%;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit}
+  .form-actions{display:flex;gap:8px;align-items:center}
+  .status{color:var(--muted);font-size:0.95rem}
+  /* small */
+  .round-badge{display:inline-grid;place-items:center;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);font-weight:700}
+  @media(max-width:720px){
+    .modal-grid{grid-template-columns:1fr}
+    header.site-header{flex-direction:column;align-items:flex-start;gap:8px}
+    .hero{padding:18px}
+  }
+  </style>
+</head>
+<body>
+  <header class="site-header container" role="banner">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">DE</div>
+      <div>
+        <h1 class="brand-title">DEMO — Tu Solución</h1>
+        <div class="muted" style="font-size:0.9rem">Prototipos rápidos • Diseño redondo</div>
+      </div>
+    </div>
+
+    <nav class="nav" role="navigation" aria-label="Navegación principal">
+      <a href="#projects">Proyectos</a>
+      <a href="#services">Servicios</a>
+      <a href="#contact">Contacto</a>
+      <a href="#" id="themeBtn" title="Alternar tema">🌙</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero card" id="home" aria-labelledby="hero-title">
+      <h2 id="hero-title">Hago demos y prototipos redondos y funcionales</h2>
+      <p class="lead">Versión avanzada dentro de un solo archivo. Todo lo que se muestra funciona: modal, contacto (abre cliente mail y exporta JSON), animaciones y guardado local.</p>
+      <div class="hero-cta">
+        <button class="btn" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">Ver proyectos</button>
+        <button class="btn ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contactar</button>
+      </div>
+    </section>
+
+    <section id="projects" class="card" aria-labelledby="projects-title">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <h3 id="projects-title">Proyectos — Demo</h3>
+        <div class="round-badge">3 demos</div>
+      </div>
+
+      <div class="grid" style="margin-top:12px">
+        <div class="project" tabindex="0" role="button" data-project="0" onclick="openProject(0)">
+          <div class="thumb" aria-hidden="true">01</div>
+          <div>
+            <h4>Landing conversión</h4>
+            <p>Landing enfocada en leadgen y tests A/B (mock).</p>
+          </div>
+        </div>
+
+        <div class="project" tabindex="0" role="button" data-project="1" onclick="openProject(1)">
+          <div class="thumb" aria-hidden="true">02</div>
+          <div>
+            <h4>Micro-SaaS (mock)</h4>
+            <p>Panel simple con métricas y auth (interfaz demo).</p>
+          </div>
+        </div>
+
+        <div class="project" tabindex="0" role="button" data-project="2" onclick="openProject(2)">
+          <div class="thumb" aria-hidden="true">03</div>
+          <div>
+            <h4>Automatización</h4>
+            <p>Scripts para flujos repetibles (cron + webhooks) — demo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="card" aria-labelledby="services-title">
+      <h3 id="services-title">Servicios</h3>
+      <div class="services" style="margin-top:8px">
+        <div class="service">
+          <div class="icon">💻</div>
+          <div>
+            <strong>Landing & Marketing</strong>
+            <div class="muted">Entrega rápida, foco en conversión.</div>
+          </div>
+        </div>
+
+        <div class="service">
+          <div class="icon">⚙️</div>
+          <div>
+            <strong>Automatizaciones</strong>
+            <div class="muted">Webhooks, cron, ETL simples.</div>
+          </div>
+        </div>
+
+        <div class="service">
+          <div class="icon">🧪</div>
+          <div>
+            <strong>Prototipos interactivos</strong>
+            <div class="muted">Validación rápida de idea.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="card" aria-labelledby="contact-title">
+      <h3 id="contact-title">Contacto — Funcional (sin servidor)</h3>
+      <p class="muted">Al enviar, se abrirá tu cliente de mail con los datos; además podés exportar el mensaje en JSON o guardarlo localmente.</p>
+
+      <form id="contactForm" novalidate onsubmit="return onSubmitContact(event)">
+        <label>Nombre
+          <input id="name" name="name" required placeholder="Tu nombre (demo)">
+        </label>
+        <label>Email
+          <input id="email" name="email" type="email" required placeholder="mail@tudominio.com">
+        </label>
+        <label>Mensaje
+          <textarea id="message" name="message" rows="4" placeholder="Qué querés mostrar en la demo?"></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button class="btn" type="submit">Enviar (abrir mail)</button>
+          <button class="btn ghost" type="button" onclick="autofill()">Autocompletar</button>
+          <button class="btn ghost" type="button" onclick="exportJSON()">Descargar JSON</button>
+        </div>
+        <div class="status" id="status" aria-live="polite"></div>
+      </form>
+
+    </section>
+
+  </main>
+
+  <footer class="site-footer container">
+    <small>© DEMO — Tu Solución. Archivo único — listo para abrir.</small>
+  </footer>
+
+  <!-- modal -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card" role="document">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong id="modal-title">Proyecto</strong>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="close-x" aria-label="Cerrar" onclick="closeModal()">Cerrar ✕</button>
+        </div>
+      </div>
+
+      <div class="modal-grid" style="margin-top:12px">
+        <div>
+          <div id="modal-thumb" class="modal-thumb">IMG</div>
+          <div class="meta">
+            <div class="pill" id="modal-role">Demo</div>
+            <div class="pill" id="modal-tech">HTML • JS</div>
+          </div>
+        </div>
+
+        <div>
+          <h4 id="modal-subtitle">Subtítulo</h4>
+          <p id="modal-desc" class="muted">Descripción</p>
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <a id="modal-live" class="btn" href="#" target="_blank" rel="noopener" onclick="return false">Abrir demo</a>
+            <a id="modal-repo" class="btn ghost" href="#" target="_blank" rel="noopener" onclick="return false">Repo (mock)</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* Datos de proyectos (mock) */
+const projects = [
+  {
+    id:0,
+    title:'Landing conversión',
+    subtitle:'Landing enfocada en conversión',
+    desc:'Landing simple, tests A/B, formularios y pixel mock.',
+    tech:'HTML • JS • Analytics',
+    live:'#',
+    repo:'#',
+    thumbText:'01'
+  },
+  {
+    id:1,
+    title:'Micro-SaaS (mock)',
+    subtitle:'Panel y métricas',
+    desc:'Interfaz de administración, mock de autenticación y métricas en tiempo real (demo).',
+    tech:'React (mock) • API (sim)',
+    live:'#',
+    repo:'#',
+    thumbText:'02'
+  },
+  {
+    id:2,
+    title:'Automatización',
+    subtitle:'Flujos y webhooks',
+    desc:'Scripts para disparar acciones, webhook receiver mock y scheduler.',
+    tech:'Node • Cron • Webhooks',
+    live:'#',
+    repo:'#',
+    thumbText:'03'
+  }
+];
+
+function openProject(i){
+  const p = projects[i];
+  document.getElementById('modal-title').textContent = p.title;
+  document.getElementById('modal-subtitle').textContent = p.subtitle;
+  document.getElementById('modal-desc').textContent = p.desc;
+  document.getElementById('modal-role').textContent = p.id === 0 ? 'Landing' : (p.id===1?'Panel':'Automatización');
+  document.getElementById('modal-tech').textContent = p.tech;
+  document.getElementById('modal-thumb').textContent = p.thumbText;
+  // demo links are mocks; prevent navigation but show clickable states
+  const live = document.getElementById('modal-live');
+  const repo = document.getElementById('modal-repo');
+  live.href = p.live;
+  repo.href = p.repo;
+  openModal();
+}
+
+function openModal(){
+  const modal = document.getElementById('modal');
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  const modal = document.getElementById('modal');
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+}
+
+/* Contact: funcional sin servidor */
+function onSubmitContact(e){
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const message = document.getElementById('message').value.trim();
+  const status = document.getElementById('status');
+
+  if(!name || !email){
+    status.textContent = 'Completa nombre y email.';
+    return false;
+  }
+
+  // guardar en localStorage como registro
+  const record = {name,email,message,ts:new Date().toISOString()};
+  const key = 'demo_contacts';
+  const prev = JSON.parse(localStorage.getItem(key) || '[]');
+  prev.push(record);
+  localStorage.setItem(key, JSON.stringify(prev));
+
+  // preparar mailto
+  const subject = encodeURIComponent('Contacto desde DEMO: ' + name);
+  const body = encodeURIComponent('Nombre: ' + name + '\nEmail: ' + email + '\n\nMensaje:\n' + message);
+  const mailto = 'mailto:tu@demo.com?subject=' + subject + '&body=' + body;
+
+  status.textContent = 'Abriendo cliente de mail...';
+  // abrir cliente
+  setTimeout(()=> {
+    window.location.href = mailto;
+    status.textContent = 'Guardado localmente. Cliente de mail abierto (si lo tienes).';
+  }, 300);
+
+  return false;
+}
+
+/* Exportar último mensaje a JSON (descarga) */
+function exportJSON(){
+  const key = 'demo_contacts';
+  const data = JSON.parse(localStorage.getItem(key) || '[]');
+  if(data.length === 0){
+    document.getElementById('status').textContent = 'No hay mensajes guardados para exportar. Completá y enviá el formulario primero.';
+    return;
+  }
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'demo_contacts.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  document.getElementById('status').textContent = 'JSON descargado.';
+}
+
+/* autofill */
+function autofill(){
+  document.getElementById('name').value = 'Cliente Demo';
+  document.getElementById('email').value = 'cliente@demo.com';
+  document.getElementById('message').value = 'Quiero ver una demo de landing y automatizaciones.';
+  document.getElementById('status').textContent = 'Campos autocompletados.';
+}
+
+/* theme toggle (visual) */
+(function(){
+  const btn = document.getElementById('themeBtn');
+  let dark = true;
+  btn.addEventListener('click', (e)=>{ e.preventDefault();
+    dark = !dark;
+    if(!dark){
+      document.documentElement.style.setProperty('--bg','#f7f9fb');
+      document.documentElement.style.setProperty('--card','#ffffff');
+      document.documentElement.style.setProperty('--glass','rgba(2,6,23,0.03)');
+      document.documentElement.style.setProperty('--accent','#06b6d4');
+      document.documentElement.style.setProperty('--muted','#334155');
+      btn.textContent = '☀️';
+    } else {
+      document.documentElement.style.setProperty('--bg','#071026');
+      document.documentElement.style.setProperty('--card','#081226');
+      document.documentElement.style.setProperty('--glass','rgba(255,255,255,0.03)');
+      document.documentElement.style.setProperty('--muted','#9aa7b8');
+      btn.textContent = '🌙';
+    }
+  });
+})();
+
+/* small: close modal on Escape */
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape'){ closeModal(); }
+});
+
+/* focus trap (basic) */
+document.getElementById('modal').addEventListener('click', (ev)=>{
+  if(ev.target === ev.currentTarget) closeModal();
+});
+
+</script>
+</body>
+</html>
