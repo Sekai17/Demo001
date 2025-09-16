@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Avanzada e Interactiva</title>
-    <meta name="description" content="Una demostración avanzada en un solo archivo con diseño moderno, modal de proyectos y un formulario de contacto funcional sin servidor.">
-    <!-- Usando la fuente Inter para una apariencia limpia -->
+    <title>Demo Web Optimizada y Autoexplicativa</title>
+    <meta name="description" content="Una demostración de una página web moderna, optimizada y autoexplicativa, construida en un solo archivo HTML con CSS y JavaScript vainilla.">
+    <!-- Usando la fuente Inter para una apariencia limpia y moderna -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -57,6 +57,10 @@
             --text-dark: var(--text-light);
             --muted-dark: var(--muted-light);
         }
+        .muted {
+            color: var(--muted-dark);
+            font-size: 0.95rem;
+        }
 
         /* --- COMPONENTES Y LAYOUT --- */
         .container {
@@ -68,7 +72,7 @@
             background: linear-gradient(180deg, var(--glass-dark), transparent);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: var(--radius-lg);
-            padding: 2rem;
+            padding: 2.5rem;
             margin-bottom: 2rem;
         }
         body.light-theme .main-card {
@@ -112,7 +116,7 @@
              border: 1px solid rgba(0, 0, 0, 0.1);
         }
         
-        /* --- Encabezado --- */
+        /* --- ENCABEZADO --- */
         .site-header {
             position: sticky;
             top: 1rem;
@@ -136,6 +140,9 @@
         .logo {
             font-weight: 800;
             font-size: 1.25rem;
+            background: linear-gradient(90deg, var(--accent1), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .nav a, .theme-toggle {
             color: var(--muted-dark);
@@ -155,33 +162,64 @@
             font-size: 1.2rem;
         }
 
-        /* --- Hero --- */
+        /* --- SECCIÓN HERO --- */
         .hero {
             text-align: center;
             padding: 4rem 2rem;
         }
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
             font-weight: 800;
             line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+        .hero .gradient-text {
             background: linear-gradient(90deg, var(--accent1), var(--accent2));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
         }
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             color: var(--muted-dark);
-            max-width: 700px;
-            margin: 0 auto 2rem;
+            max-width: 750px;
+            margin: 0 auto 2.5rem;
         }
         .hero-cta {
             display: flex;
             justify-content: center;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
-        /* --- Proyectos --- */
+        /* --- SECCIÓN DE EXPLICACIÓN --- */
+        .feature-card {
+            background: linear-gradient(180deg, var(--glass-dark), transparent);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .feature-card .icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .feature-card p {
+            color: var(--muted-dark);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+
+        /* --- PROYECTOS --- */
         .project-card {
             background: linear-gradient(180deg, var(--glass-dark), transparent);
             border-radius: var(--radius-md);
@@ -189,6 +227,8 @@
             cursor: pointer;
             transition: var(--transition);
             border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
         }
         .project-card:hover {
             transform: translateY(-8px);
@@ -202,9 +242,10 @@
         .project-card p {
             color: var(--muted-dark);
             font-size: 0.95rem;
+            flex-grow: 1;
         }
 
-        /* --- Formulario de Contacto --- */
+        /* --- FORMULARIO DE CONTACTO --- */
         .contact-form {
             display: flex;
             flex-direction: column;
@@ -218,6 +259,7 @@
             background: var(--glass-dark);
             color: var(--text-dark);
             font-family: inherit;
+            font-size: 1rem;
         }
         body.light-theme .contact-form input, body.light-theme .contact-form textarea {
              border: 1px solid rgba(0, 0, 0, 0.1);
@@ -231,9 +273,10 @@
             margin-top: 1rem;
             color: var(--muted-dark);
             font-size: 0.9rem;
+            min-height: 1.2em;
         }
 
-        /* --- Modal --- */
+        /* --- MODAL --- */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -288,13 +331,14 @@
             border-radius: 999px;
             font-size: 0.8rem;
             font-weight: 500;
-            margin-right: 0.5rem;
+            margin: 0.25rem 0.5rem 0.25rem 0;
         }
 
-        /* --- Responsive --- */
+        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
             .nav { display: none; }
             .hero-cta { flex-direction: column; }
+            .main-card { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -302,8 +346,9 @@
 
     <header class="site-header container">
         <div class="header-inner">
-            <div class="logo">DemoAvanzada</div>
+            <div class="logo">DemoWeb</div>
             <nav class="nav">
+                <a href="#how-it-works">¿Cómo funciona?</a>
                 <a href="#projects">Proyectos</a>
                 <a href="#contact">Contacto</a>
             </nav>
@@ -312,38 +357,70 @@
     </header>
 
     <main class="container">
+        <!-- SECCIÓN DE BIENVENIDA -->
         <section class="hero main-card">
-            <h1>Prototipos Interactivos en un Archivo</h1>
+            <h1>Una Demo <span class="gradient-text">Profesional y Optimizada</span></h1>
             <p>
-                Esta es una demostración de lo que se puede lograr con HTML, CSS y JavaScript en un solo archivo.
-                Incluye un modal, cambio de tema y un formulario funcional sin servidor.
+                ¡Bienvenido! Esta no es solo una página, es una demostración interactiva de desarrollo web moderno. 
+                Todo lo que ves aquí —estilos, interactividad y contenido— está consolidado en <strong>un único archivo HTML</strong>.
+                Explora las secciones para ver las técnicas en acción.
             </p>
             <div class="hero-cta">
-                <a href="#projects" class="btn btn-primary">Ver Proyectos Demo</a>
-                <a href="#contact" class="btn btn-secondary">Probar Formulario</a>
+                <a href="#how-it-works" class="btn btn-primary">Ver cómo se hizo</a>
+                <a href="#contact" class="btn btn-secondary">Probar el Formulario</a>
             </div>
         </section>
 
+        <!-- SECCIÓN DE EXPLICACIÓN "CÓMO SE HIZO" -->
+        <section id="how-it-works" class="main-card">
+            <h2>¿Cómo se construyó esta demo?</h2>
+            <p class="muted" style="margin-bottom: 2rem;">Se aplicaron varias técnicas y buenas prácticas para asegurar que la página sea eficiente, moderna y fácil de mantener.</p>
+            <div class="grid">
+                <div class="feature-card">
+                    <span class="icon">📄</span>
+                    <h3>Estructura en un Archivo</h3>
+                    <p>Para simplificar la portabilidad, todo el código (HTML, CSS y JavaScript) está en este mismo archivo. Esto es ideal para demos, prototipos rápidos y pruebas de concepto.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🎨</span>
+                    <h3>CSS Moderno y Theming</h3>
+                    <p>Se usan variables CSS (:root) para manejar los temas claro/oscuro de forma sencilla. El efecto "cristal" (glassmorphism) del header se logra con <code>backdrop-filter</code> para un toque visual moderno.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">⚡️</span>
+                    <h3>JavaScript Vainilla</h3>
+                    <p>Toda la interactividad (modal, formulario, cambio de tema) se maneja con JavaScript puro, sin librerías externas. Esto optimiza el rendimiento y reduce el tiempo de carga de la página.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">♿️</span>
+                    <h3>Accesibilidad y SEO</h3>
+                    <p>Se utiliza HTML semántico (<code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>) y atributos como <code>title</code> y <code>meta description</code> para mejorar la accesibilidad para lectores de pantalla y la optimización para motores de búsqueda.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE PROYECTOS -->
         <section id="projects" class="main-card">
             <h2>Proyectos Destacados (Demo)</h2>
-            <p class="muted" style="margin-bottom: 2rem;">Haz clic en cualquier proyecto para ver los detalles en un modal interactivo.</p>
+            <p class="muted" style="margin-bottom: 2rem;">Haz clic en cualquier proyecto para ver los detalles. La ventana modal que aparece es una demostración de manipulación del DOM con JavaScript para crear interfaces dinámicas sin recargar la página.</p>
             <div class="grid" id="projects-grid">
-                <!-- Los proyectos se insertarán aquí con JS -->
+                <!-- Los proyectos se insertarán aquí dinámicamente con JS -->
             </div>
         </section>
 
+        <!-- SECCIÓN DE CONTACTO -->
         <section id="contact" class="main-card">
-            <h2>Formulario de Contacto Funcional</h2>
+            <h2>Formulario de Contacto "Serverless"</h2>
             <p class="muted" style="margin-bottom: 2rem;">
-                Este formulario no usa servidor. Al enviar, abrirá tu cliente de email y guardará una copia en el almacenamiento local de tu navegador, que luego podrás exportar como JSON.
+                Este formulario es una simulación funcional. <strong>No requiere un servidor (backend)</strong>. Al enviarlo, utiliza el protocolo <code>mailto:</code> para abrir tu cliente de correo. Además, guarda una copia de los mensajes en el <code>localStorage</code> de tu navegador, que puedes exportar como un archivo JSON.
             </p>
             <form id="contact-form" class="contact-form" novalidate>
                 <input type="text" id="name" name="name" placeholder="Tu Nombre" required>
                 <input type="email" id="email" name="email" placeholder="tu@email.com" required>
                 <textarea id="message" name="message" rows="5" placeholder="Tu mensaje..." required></textarea>
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Enviar (abre Mail)</button>
-                    <button type="button" id="autofill-btn" class="btn btn-secondary">Autocompletar</button>
+                    <button type="submit" class="btn btn-primary">Enviar (abre cliente de email)</button>
+                    <button type="button" id="autofill-btn" class="btn btn-secondary">Autocompletar Datos</button>
                     <button type="button" id="export-btn" class="btn btn-secondary">Exportar a JSON</button>
                 </div>
                 <div id="status-message"></div>
@@ -351,7 +428,7 @@
         </section>
     </main>
 
-    <!-- Modal para los Proyectos -->
+    <!-- MODAL PARA LOS PROYECTOS -->
     <div id="project-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -368,7 +445,7 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-        // --- DATOS DE LOS PROYECTOS (MOCK) ---
+        // --- DATOS DE LOS PROYECTOS (SIMULADOS) ---
         const projectsData = [
             {
                 title: 'Sistema de Diseño UI',
@@ -377,28 +454,38 @@
             },
             {
                 title: 'Dashboard de Métricas',
-                description: 'Demo de un panel de control para visualizar métricas clave de un producto. Utiliza gráficos generados con JavaScript para mostrar datos simulados en tiempo real.',
+                description: 'Demo de un panel de control para visualizar métricas clave. Utiliza gráficos simulados con JavaScript para mostrar datos, demostrando la capacidad de crear visualizaciones dinámicas.',
                 tags: ['SaaS', 'DataViz', 'JavaScript']
             },
             {
-                title: 'Landing Page A/B Test',
+                title: 'Landing Page para A/B Test',
                 description: 'Una landing page diseñada para pruebas de conversión. Este prototipo permite simular diferentes versiones para analizar cuál sería más efectiva con los usuarios.',
-                tags: ['Marketing', 'Conversión', 'Demo']
+                tags: ['Marketing', 'CRO', 'Demo']
+            },
+            {
+                title: 'E-commerce Minimalista',
+                description: 'Interfaz de una tienda online centrada en la experiencia de usuario. Muestra la navegación, fichas de producto y un flujo de compra simplificado, todo de forma estática.',
+                tags: ['E-commerce', 'UX', 'Frontend']
             }
         ];
 
-        // --- RENDERIZAR PROYECTOS ---
+        // --- RENDERIZAR PROYECTOS EN LA CUADRÍCULA ---
         const projectsGrid = document.getElementById('projects-grid');
-        projectsData.forEach((project, index) => {
-            const card = document.createElement('div');
-            card.className = 'project-card';
-            card.dataset.index = index;
-            card.innerHTML = `
-                <h3>${project.title}</h3>
-                <p>${project.description.substring(0, 80)}...</p>
-            `;
-            projectsGrid.appendChild(card);
-        });
+        if (projectsGrid) {
+            projectsData.forEach((project, index) => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                card.dataset.index = index;
+                card.innerHTML = `
+                    <h3>${project.title}</h3>
+                    <p>${project.description.substring(0, 90)}...</p>
+                    <div class="tags-preview" style="margin-top: 1rem;">
+                        ${project.tags.map(tag => `<span class="tag" style="font-size: 0.7rem; padding: 3px 8px;">${tag}</span>`).join('')}
+                    </div>
+                `;
+                projectsGrid.appendChild(card);
+            });
+        }
 
         // --- LÓGICA DEL MODAL ---
         const modal = document.getElementById('project-modal');
@@ -418,90 +505,4 @@
                 modalTags.innerHTML = project.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
                 
                 modal.classList.add('open');
-                document.body.style.overflow = 'hidden';
-            }
-        });
-
-        const closeModal = () => {
-            modal.classList.remove('open');
-            document.body.style.overflow = '';
-        };
-        closeModalBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('open')) {
-                closeModal();
-            }
-        });
-
-        // --- LÓGICA DEL FORMULARIO DE CONTACTO ---
-        const contactForm = document.getElementById('contact-form');
-        const statusMessage = document.getElementById('status-message');
-
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const formData = new FormData(contactForm);
-            const name = formData.get('name').trim();
-            const email = formData.get('email').trim();
-            const message = formData.get('message').trim();
-
-            if (!name || !email || !message) {
-                statusMessage.textContent = 'Por favor, completa todos los campos.';
-                return;
-            }
-
-            // 1. Guardar en localStorage
-            const submission = { name, email, message, timestamp: new Date().toISOString() };
-            const submissions = JSON.parse(localStorage.getItem('demo_submissions') || '[]');
-            submissions.push(submission);
-            localStorage.setItem('demo_submissions', JSON.stringify(submissions));
-            statusMessage.textContent = 'Mensaje guardado localmente. Abriendo cliente de email...';
-
-            // 2. Abrir cliente de email
-            const subject = encodeURIComponent(`Contacto desde Demo: ${name}`);
-            const body = encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`);
-            window.location.href = `mailto:contacto@ejemplo.com?subject=${subject}&body=${body}`;
-            
-            contactForm.reset();
-        });
-
-        document.getElementById('autofill-btn').addEventListener('click', () => {
-            contactForm.name.value = 'Usuario de Prueba';
-            contactForm.email.value = 'test@ejemplo.com';
-            contactForm.message.value = 'Este es un mensaje de prueba para la demostración.';
-            statusMessage.textContent = 'Formulario autocompletado.';
-        });
-        
-        document.getElementById('export-btn').addEventListener('click', () => {
-            const submissions = localStorage.getItem('demo_submissions');
-            if (!submissions || submissions === '[]') {
-                statusMessage.textContent = 'No hay mensajes guardados para exportar.';
-                return;
-            }
-            const blob = new Blob([submissions], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'contactos_demo.json';
-            a.click();
-            URL.revokeObjectURL(url);
-            statusMessage.textContent = 'Archivo JSON exportado con éxito.';
-        });
-
-        // --- LÓGICA DEL CAMBIO DE TEMA ---
-        const themeToggle = document.getElementById('theme-toggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
-            const isLight = document.body.classList.contains('light-theme');
-            themeToggle.textContent = isLight ? '🌙' : '☀️';
-            themeToggle.title = isLight ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro';
-        });
-
-    });
-    </script>
-</body>
-</html>
+                document.body.
