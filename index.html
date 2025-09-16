@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Web Moderna y Educativa</title>
+    <meta name="description" content="Una demostración de una página web moderna construida en un solo archivo HTML, explicando sus características interactivas.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- VARIABLES DE DISEÑO Y TEMA --- */
+        :root {
+            --bg-dark: #0a0e1a;
+            --card-dark: #111629;
+            --glass-dark: rgba(255, 255, 255, 0.03);
+            --text-dark: #e1e7f5;
+            --muted-dark: #828d9e;
+
+            --bg-light: #f4f7fc;
+            --card-light: #ffffff;
+            --glass-light: rgba(0, 0, 0, 0.03);
+            --text-light: #111827;
+            --muted-light: #6b7280;
+
+            --accent1: #38bdf8; /* sky-400 */
+            --accent2: #a78bfa; /* violet-400 */
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* --- ESTILOS BASE --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+        body.light-theme {
+            --bg-dark: var(--bg-light);
+            --card-dark: var(--card-light);
+            --glass-dark: var(--glass-light);
+            --text-dark: var(--text-light);
+            --muted-dark: var(--muted-light);
+        }
+
+        /* --- COMPONENTES Y LAYOUT --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .main-card {
+            background: linear-gradient(180deg, var(--glass-dark), transparent);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        body.light-theme .main-card {
+             border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 999px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            text-align: center;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent1), var(--accent2));
+            color: #040815;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        .btn-secondary {
+            background: var(--glass-dark);
+            color: var(--text-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        body.light-theme .btn-secondary {
+             background: rgba(0, 0, 0, 0.05);
+             border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        code {
+            background: var(--glass-dark);
+            padding: 3px 6px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        body.light-theme code {
+            border-color: rgba(0,0,0,0.1);
+        }
+        
+        /* --- Encabezado --- */
+        .site-header {
+            position: sticky;
+            top: 1rem;
+            z-index: 50;
+            padding: 0.75rem 0;
+        }
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(17, 22, 41, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 999px;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        body.light-theme .header-inner {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+        }
+        .nav a {
+            color: var(--muted-dark);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border-radius: 999px;
+        }
+        .nav a:hover {
+            color: var(--text-dark);
+            background: var(--glass-dark);
+        }
+        .theme-toggle {
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--muted-dark);
+        }
+        .theme-toggle:hover {
+            color: var(--text-dark);
+        }
+
+        /* --- Hero --- */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            background: linear-gradient(90deg, var(--accent1), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--muted-dark);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        .hero-cta {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* --- Secciones y tarjetas --- */
+        section h2 { margin-bottom: 0.5rem; }
+        .section-description {
+            color: var(--muted-dark);
+            margin-bottom: 2rem;
+            max-width: 800px;
+        }
+        .feature-card {
+            background: linear-gradient(180deg, var(--glass-dark), transparent);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .feature-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem;}
+        .feature-card p { color: var(--muted-dark); font-size: 0.95rem; line-height: 1.6; }
+        
+        .project-card {
+            background: linear-gradient(180deg, var(--glass-dark), transparent);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .project-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .project-card p { color: var(--muted-dark); font-size: 0.95rem; }
+
+        /* --- Formulario de Contacto --- */
+        .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+        .contact-form input, .contact-form textarea {
+            width: 100%; padding: 12px; border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--glass-dark); color: var(--text-dark); font-family: inherit;
+        }
+        body.light-theme .contact-form input, body.light-theme .contact-form textarea {
+             border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .form-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        #status-message { margin-top: 1rem; color: var(--muted-dark); font-size: 0.9rem; }
+
+        /* --- Modal --- */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(8px); z-index: 100; display: flex;
+            align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .modal-overlay.open { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: var(--card-dark); border-radius: var(--radius-lg); padding: 2rem;
+            max-width: 600px; width: 90%; border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: scale(0.95); transition: transform 0.4s ease;
+        }
+        .modal-overlay.open .modal-content { transform: scale(1); }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;
+        }
+        #modal-title { font-size: 1.5rem; }
+        #modal-close {
+            background: none; border: none; color: var(--muted-dark); font-size: 1.5rem; cursor: pointer;
+        }
+        .tag {
+            display: inline-block; background: var(--glass-dark); color: var(--accent1);
+            padding: 4px 10px; border-radius: 999px; font-size: 0.8rem;
+            font-weight: 500; margin-right: 0.5rem; margin-bottom: 0.5rem;
+        }
+        
+        /* --- Footer --- */
+        .site-footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--muted-dark);
+            font-size: 0.9rem;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .nav { display: none; }
+            .hero-cta { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header container">
+        <div class="header-inner">
+            <div class="logo">DemoWeb</div>
+            <nav class="nav">
+                <a href="#how-it-works">Cómo funciona</a>
+                <a href="#projects">Proyectos</a>
+                <a href="#contact">Contacto</a>
+            </nav>
+            <button id="theme-toggle" class="theme-toggle" title="Cambiar a tema claro">☀️</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero main-card">
+            <h1>Una Demo de Desarrollo Web Moderno</h1>
+            <p>
+                ¡Bienvenido! Esta página es una demostración técnica construida en <strong>un solo archivo HTML</strong>.
+                Está diseñada para ser hermosa, rápida y para mostrar cómo implementar características profesionales de manera eficiente.
+            </p>
+            <div class="hero-cta">
+                <a href="#how-it-works" class="btn btn-primary">Descubre cómo se hizo</a>
+                <a href="#projects" class="btn btn-secondary">Ver Demos Interactivas</a>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="main-card">
+            <h2>¿Cómo está construida esta demo?</h2>
+            <p class="section-description">
+                Esta página no es solo una demo visual, sino también una demostración de código limpio y buenas prácticas. Aquí están algunas de las técnicas clave utilizadas:
+            </p>
+            <div class="grid">
+                <div class="feature-card">
+                    <h3>Tema Claro/Oscuro con CSS</h3>
+                    <p>
+                        El cambio de tema se logra con <strong>Variables CSS</strong> (ej: <code>--bg-dark</code>). Un simple script de JavaScript añade la clase <code>.light-theme</code> al <code>&lt;body&gt;</code>, lo que actualiza instantáneamente todos los colores definidos en las variables.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <h3>Contenido Dinámico con JS</h3>
+                    <p>
+                        Las tarjetas de "Proyectos" no están escritas en el HTML. Se crean dinámicamente usando <strong>JavaScript</strong> a partir de un array de datos. Esto hace que el contenido sea fácil de actualizar sin tocar la estructura HTML.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <h3>Formulario 100% Frontend</h3>
+                    <p>
+                        El formulario de contacto funciona <strong>sin un servidor</strong>. Guarda los datos en el <code>localStorage</code> de tu navegador y usa <code>mailto:</code> para abrir tu cliente de correo. Es una solución perfecta para prototipos o sitios estáticos.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="main-card">
+            <h2>Proyectos de Demostración</h2>
+            <p class="section-description">
+                Estas tarjetas son generadas con JavaScript. Haz clic en cualquiera de ellas para abrir un <strong>modal interactivo</strong> que carga la información correspondiente del proyecto. Es una técnica muy común en aplicaciones web modernas.
+            </p>
+            <div class="grid" id="projects-grid">
+                </div>
+        </section>
+
+        <section id="contact" class="main-card">
+            <h2>Formulario de Contacto Funcional (Demo)</h2>
+            <p class="section-description">
+                Este formulario demuestra cómo capturar y gestionar datos sin un backend. Al enviar, guardará una copia localmente (que puedes exportar como JSON) y preparará un borrador en tu aplicación de correo electrónico.
+            </p>
+            <form id="contact-form" class="contact-form" novalidate>
+                <input type="text" id="name" name="name" placeholder="Tu Nombre" required>
+                <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                <textarea id="message" name="message" rows="5" placeholder="Tu mensaje..." required></textarea>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Enviar (abre Mail)</button>
+                    <button type="button" id="autofill-btn" class="btn btn-secondary">Rellenar Demo</button>
+                    <button type="button" id="export-btn" class="btn btn-secondary">Exportar a JSON</button>
+                </div>
+                <div id="status-message"></div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="site-footer container">
+        <p>Demo creada para mostrar buenas prácticas en desarrollo web front-end.</p>
+    </footer>
+
+    <div id="project-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Título del Proyecto</h2>
+                <button id="modal-close" title="Cerrar modal">&times;</button>
+            </div>
+            <div id="modal-body">
+                <div id="modal-tags" style="margin-bottom: 1rem;"></div>
+                <p id="modal-description" class="muted"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- DATOS DE LOS PROYECTOS (MOCK) ---
+        const projectsData = [
+            {
+                title: 'Sistema de Diseño UI',
+                description: 'Un prototipo interactivo que muestra una librería de componentes de UI reutilizables, enfocada en la consistencia y la accesibilidad. Ideal para validar la identidad visual de una marca.',
+                tags: ['UI/UX', 'Prototipo', 'HTML/CSS']
+            },
+            {
+                title: 'Dashboard de Métricas',
+                description: 'Demo de un panel de control para visualizar métricas clave de un producto. Utiliza gráficos generados con JavaScript para mostrar datos simulados en tiempo real.',
+                tags: ['SaaS', 'DataViz', 'JavaScript']
+            },
+            {
+                title: 'Landing Page A/B Test',
+                description: 'Una landing page diseñada para pruebas de conversión. Este prototipo permite simular diferentes versiones para analizar cuál sería más efectiva con los usuarios.',
+                tags: ['Marketing', 'Optimización', 'Demo']
+            },
+            {
+                title: 'API de E-commerce',
+                description: 'Ejemplo de cómo una interfaz puede consumir datos de una API simulada para mostrar productos, precios y descripciones de manera dinámica y eficiente.',
+                tags: ['API', 'Frontend', 'E-commerce']
+            }
+        ];
+
+        // --- RENDERIZAR PROYECTOS ---
+        const projectsGrid = document.getElementById('projects-grid');
+        projectsData.forEach((project, index) => {
+            const card = document.createElement('div');
+            card.className = 'project-card';
+            card.dataset.index = index;
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+            card.innerHTML = `
+                <h3>${project.title}</h3>
+                <p>${project.description.substring(0, 80)}...</p>
+            `;
+            projectsGrid.appendChild(card);
+        });
+
+        // --- LÓGICA DEL MODAL ---
+        const modal = document.getElementById('project-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const modalTags = document.getElementById('modal-tags');
+        const closeModalBtn = document.getElementById('modal-close');
+
+        const openModal = (project) => {
+            modalTitle.textContent = project.title;
+            modalDescription.textContent = project.description;
+            modalTags.innerHTML = project.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+            
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        };
+
+        projectsGrid.addEventListener('click', (e) => {
+            const card = e.target.closest('.project-card');
+            if (card) {
+                const projectIndex = card.dataset.index;
+                const project = projectsData[projectIndex];
+                openModal(project);
+            }
+        });
+        
+        projectsGrid.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                 const card = e.target.closest('.project-card');
+                if (card) {
+                    e.preventDefault();
+                    const projectIndex = card.dataset.index;
+                    const project = projectsData[projectIndex];
+                    openModal(project);
+                }
+            }
+        });
+
+
+        const closeModal = () => {
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+        };
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+        });
+
+        // --- LÓGICA DEL FORMULARIO DE CONTACTO ---
+        const contactForm = document.getElementById('contact-form');
+        const statusMessage = document.getElementById('status-message');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(contactForm);
+            const name = formData.get('name').trim();
+            const email = formData.get('email').trim();
+            const message = formData.get('message').trim();
+
+            if (!name || !email || !message) {
+                statusMessage.textContent = 'Por favor, completa todos los campos.';
+                return;
+            }
+
+            const submission = { name, email, message, timestamp: new Date().toISOString() };
+            const submissions = JSON.parse(localStorage.getItem('demo_submissions') || '[]');
+            submissions.push(submission);
+            localStorage.setItem('demo_submissions', JSON.stringify(submissions));
+            
+            const subject = encodeURIComponent(`Contacto desde Demo: ${name}`);
+            const body = encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`);
+            window.location.href = `mailto:contacto@ejemplo.com?subject=${subject}&body=${body}`;
+            
+            statusMessage.textContent = 'Mensaje guardado localmente. Abriendo cliente de email...';
+            contactForm.reset();
+            setTimeout(() => { statusMessage.textContent = ''; }, 4000);
+        });
+
+        document.getElementById('autofill-btn').addEventListener('click', () => {
+            contactForm.name.value = 'Usuario de Prueba';
+            contactForm.email.value = 'test@ejemplo.com';
+            contactForm.message.value = 'Este es un mensaje de prueba para la demostración.';
+            statusMessage.textContent = 'Formulario autocompletado.';
+        });
+        
+        document.getElementById('export-btn').addEventListener('click', () => {
+            const submissions = localStorage.getItem('demo_submissions');
+            if (!submissions || submissions === '[]') {
+                statusMessage.textContent = 'No hay mensajes guardados para exportar.';
+                return;
+            }
+            const blob = new Blob([submissions], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'contactos_demo.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            statusMessage.textContent = 'Archivo JSON exportado con éxito.';
+        });
+
+        // --- LÓGICA DEL CAMBIO DE TEMA ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        // Establecer tema inicial basado en las preferencias del sistema
+        if (prefersDark) {
+            document.body.classList.remove('light-theme');
+            themeToggle.textContent = '☀️';
+            themeToggle.title = 'Cambiar a tema claro';
+        } else {
+            document.body.classList.add('light-theme');
+            themeToggle.textContent = '🌙';
+            themeToggle.title = 'Cambiar a tema oscuro';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            themeToggle.textContent = isLight ? '🌙' : '☀️';
+            themeToggle.title = isLight ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro';
+        });
+
+    });
+    </script>
+</body>
+</html>
